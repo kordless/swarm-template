@@ -1,0 +1,22 @@
+{
+  "app_name": "app",
+  "services": [
+    {
+      "service_name": "app-service",
+      "components": [
+        {
+          "component_name": "app-component",
+          "image": "registry.giantswarm.io/$username/app",
+          "ports": [8000],
+          "domains": {
+            "$domain": 8000
+          },
+          "env": {
+            "VAR_1": "$var_1",
+            "VAR_2": "$var_2"
+          },
+        }
+      ]
+    }
+  ]
+}
