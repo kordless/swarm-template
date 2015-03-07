@@ -12,7 +12,7 @@ MY_IP = $(shell boot2docker ip)
 docker-build:
 	docker build -t $(REGISTRY)/$(USERNAME)/$(PROJECT) .
 
-docker-run:
+docker-run: docker-build
 	@echo "Your app is running at http://$(MY_IP):8000"
 	docker run --rm -ti \
 		-e "VAR_1=$(VAR_1)" \
