@@ -4,8 +4,8 @@ FROM dockerfile/ubuntu
 # aptitude update and install
 RUN apt-get update
 RUN apt-get -y install python
-RUN	apt-get clean
-RUN	rm -rf /var/lib/apt/lists/*
+RUN apt-get clean
+RUN rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
