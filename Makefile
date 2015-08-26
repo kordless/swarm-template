@@ -18,7 +18,7 @@ build:
 
 run: build
 	@echo "##########################################################################"
-	@echo "Your service $(PROJECT) will be running at http://$(MY_IP):$(PORT)/"
+	@echo "Your service $(PROJECT) will be running at http://$(MY_IP):$(API_PORT)/webui"
 	@echo "##########################################################################"
 
 	docker run --rm -ti \
