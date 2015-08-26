@@ -1,22 +1,13 @@
 {
-  "app_name": "app",
-  "services": [
-    {
-      "service_name": "app-service",
-      "components": [
-        {
-          "component_name": "app-component",
-          "image": "registry.giantswarm.io/$username/app",
-          "ports": [8000],
-          "domains": {
-            "$domain": 8000
-          },
-          "env": {
-            "VAR_1": "$var_1",
-            "VAR_2": "$var_2"
-          },
-        }
-      ]
+  "name": "$project",
+  "components": {
+    "ipfs-server": {
+      "image": "registry.giantswarm.io/$org/$project",
+      "ports": [$ipfs_port, $api_port],
+      "domains": {
+        "5001/tcp": "$ipfs-domain",
+        "4001/tcp": "$api-domain"
+      }
     }
-  ]
+  }     
 }

@@ -1,0 +1,10 @@
+{
+  "kord/alt": {
+    "ipfs-domain": "ipfs-kord.gigantic.io",
+    "api-domain": "api-kord.gigantic.io",
+    "org": "kord",
+    "project": "ipfs",
+    "ipfs_port": 4001,
+    "api_port": 5001
+  }
+}

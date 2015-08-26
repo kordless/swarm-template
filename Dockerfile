@@ -1,21 +1,13 @@
-# Pull base image.
-FROM dockerfile/ubuntu
+FROM golang
 
-# aptitude update and install
 RUN apt-get update
-RUN apt-get -y install python
-RUN apt-get clean
-RUN rm -rf /var/lib/apt/lists/*
+RUN apt-get install -y fuse
 
-WORKDIR /app
+RUN go get -u github.com/ipfs/go-ipfs/cmd/ipfs
 
-# copy over start script and page
-COPY start.sh start.sh
-COPY index.html index.html
+RUN mkdir /ipfs/
+COPY entrypoint.sh /ipfs/
 
-# start ghost
-CMD ["bash", "/app/start.sh"]
+EXPOSE 4001
 
-# listen on this port
-EXPOSE 8000
-
+CMD ["/ipfs/entrypoint.sh"]

@@ -1,34 +1,47 @@
 # standard info
-PROJECT = app
+PROJECT = ipfs
 REGISTRY = registry.giantswarm.io
 USERNAME :=  $(shell swarm user)
-DOMAIN = app-$(USERNAME).gigantic.io
-VAR_1 = foo
-VAR_2 = bar
+IPFS_DOMAIN = ipfs-$(USERNAME).gigantic.io
+API_DOMAIN = api-$(USERNAME).gigantic.io
+API_PORT = 5001
+IPFS_PORT = 4001
+GATEWAY_PORT = 8080
+MACHINE = default
 
 # local info
-MY_IP = $(shell boot2docker ip)
+MY_IP = $(shell docker-machine ip $(MACHINE))
+# MY_IP = $(shell boot2docker ip)
 
-docker-build:
+build:
 	docker build -t $(REGISTRY)/$(USERNAME)/$(PROJECT) .
 
-docker-run:
-	@echo "Your app is running at http://$(MY_IP):8000"
+run: build
+	@echo "##########################################################################"
+	@echo "Your service $(PROJECT) will be running at http://$(MY_IP):$(PORT)/"
+	@echo "##########################################################################"
+
 	docker run --rm -ti \
-		-e "VAR_1=$(VAR_1)" \
-		-e "VAR_2=$(VAR_2)" \
-		-p 8000:8000 \
+		-p $(API_PORT):$(API_PORT) \
+		-p $(IPFS_PORT):$(IPFS_PORT) \
+		-p $(GATEWAY_PORT):$(GATEWAY_PORT) \
 		$(REGISTRY)/$(USERNAME)/$(PROJECT)
 
-docker-push: docker-build
+push: build
 	docker push $(REGISTRY)/$(USERNAME)/$(PROJECT)
 
-docker-pull:
+pull:
 	docker pull $(REGISTRY)/$(USERNAME)/$(PROJECT)
 
-swarm-up: docker-push
+up: push
 	swarm up \
-	  --var=var_1=$(VAR_1) \
-	  --var=var_2=$(VAR_2) \
-	  --var=domain=$(DOMAIN)
-	@echo "Your app is running at http://$(domain)"
+	  --var=api_domain=$(API_DOMAIN) \
+	  --var=ipfs_domain=$(IPFS_DOMAIN) \
+	  --var=org=$(USERNAME) \
+	  --var=ipfs_port=$(IPFS_PORT) \
+	  --var=api_port=$(API_PORT)
+	  --var=name=$(PROJECT)
+
+	@echo "##########################################################################"
+	@echo "Your service '$(PROJECT)' is running at http://$(API_DOMAIN)/webui"
+	@echo "##########################################################################"
